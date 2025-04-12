@@ -1,0 +1,1857 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>```html
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Genesis: Subversion Catalyst - Learning Trajectory</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #333;
+            margin-top: 1.2em;
+            margin-bottom: 0.6em;
+        }
+        h1 { font-size: 2.2em; border-bottom: 2px solid #333; padding-bottom: 0.3em; }
+        h2 { font-size: 1.8em; border-bottom: 1px solid #ccc; padding-bottom: 0.2em; }
+        h3 { font-size: 1.5em; }
+        h4 { font-size: 1.3em; color: #444; margin-left: 10px; } /* Style for <summary> content */
+        h5 { font-size: 1.15em; color: #555; margin-left: 20px; } /* Style for <summary> content */
+        h6 { font-size: 1.05em; color: #666; margin-left: 30px; } /* Style for L5 Resource/Action Titles */
+
+        /* --- Hierarchy Visualization --- */
+        .module.level-1 {
+            border: 2px solid #003366; /* Dark Blue */
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 6px;
+            background-color: #e6f0ff; /* Light blue background */
+        }
+        .topic.level-2 {
+            border-left: 5px solid #0066cc; /* Medium Blue */
+            padding-left: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: #f0f8ff; /* Alice blue background */
+            border-radius: 0 4px 4px 0;
+        }
+        .concept.level-3 {
+            border-left: 4px solid #3399ff; /* Bright Blue */
+            padding-left: 10px;
+            margin-left: 20px;
+            margin-top: 15px;
+            background-color: #ffffff;
+            border-radius: 4px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .integration-point.level-4 {
+            border-left: 3px solid #66ccff; /* Light Sky Blue */
+            padding-left: 10px;
+            margin-left: 35px; /* Increased indentation */
+            margin-top: 10px;
+            background-color: #fafcff;
+            border-radius: 4px;
+        }
+         .resource-list.level-5 {
+            list-style: none;
+            padding-left: 15px; /* Base padding for L5 items */
+            margin-left: 50px; /* Increased indentation */
+            margin-top: 5px;
+            border-left: 2px solid #99ddff; /* Very Light Blue */
+        }
+        .resource.level-5 {
+            padding: 8px;
+            margin-bottom: 8px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background-color: #fff;
+            position: relative; /* For absolute positioning of icons/tags */
+        }
+        /* Add more specific indentation/styling if needed based on nesting inside details */
+        details > div > .resource-list.level-5 { margin-left: 0; } /* Reset if inside details div */
+        details > div > .resource.level-5 { margin-left: 0; } /* Reset if inside details div */
+
+        /* --- Resource Type Styling --- */
+        .resource::before { /* General icon placeholder */
+            content: '📄';
+            display: inline-block;
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+        .resource-type-book::before { content: '📚'; color: #4CAF50; }
+        .resource-type-course::before { content: '🎓'; color: #2196F3; }
+        .resource-type-paper::before { content: '📜'; color: #9C27B0; }
+        .resource-type-article::before { content: '📰'; color: #FF9800; }
+        .resource-type-docs::before { content: '🔧'; color: #607D8B; }
+        .resource-type-tool::before { content: '🛠️'; color: #795548; }
+        .resource-type-project-task::before { content: '🎯'; color: #E91E63; }
+        .resource-type-exercise::before { content: '🏋️'; color: #00BCD4; }
+        .resource-type-setup::before { content: '⚙️'; color: #8BC34A; }
+        .resource-type-community::before { content: '👥'; color: #FFC107; }
+        .resource-type-math::before { content: '📐'; color: #c51162; } /* Math resources */
+        .resource-type-theory::before { content: '🧠'; color: #6200ea; } /* Theory resources */
+
+        /* --- Status Styling --- */
+        .status-optional { border-left: 5px solid #FFC107; /* Amber */ }
+        .status-alternative { border-left: 5px solid #03A9F4; /* Light Blue */ }
+        .status-conflict { border: 2px dashed #F44336; background-color: #ffebee; padding: 6px; /* Red */ }
+        .status-placeholder { border-left: 5px solid #9E9E9E; font-style: italic; color: #777; /* Grey */ }
+
+        /* --- Other Element Styling --- */
+        .prerequisites {
+            font-size: 0.9em;
+            margin-bottom: 5px;
+            color: #555;
+            border-left: 3px solid #ff9800;
+            padding-left: 8px;
+            margin-top: 5px;
+        }
+        .prerequisites strong { color: #c00; }
+        .prereq-critical { font-weight: bold; color: #c00; } /* Critical prerequisite */
+        .foundation-links {
+            font-size: 0.85em;
+            margin-top: 8px;
+            color: #666;
+        }
+        .foundation-links a {
+            color: #0066cc;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+        .foundation-links a:hover { text-decoration: underline; }
+        .rationale {
+            font-size: 0.85em;
+            font-style: italic;
+            color: #6a1b9a; /* Purple */
+            background-color: #f3e5f5;
+            padding: 5px;
+            margin-top: 5px;
+            border-left: 3px solid #ab47bc;
+            border-radius: 3px;
+        }
+        .skill-tag {
+            display: inline-block;
+            background-color: #e0e0e0;
+            color: #333;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        .skill-level-0 { background-color: #ffebee; } /* Novice */
+        .skill-level-1 { background-color: #e3f2fd; } /* Beginner */
+        .skill-level-2 { background-color: #e8f5e9; } /* Intermediate */
+        .skill-level-3 { background-color: #fff3e0; } /* Advanced */
+        .skill-level-4 { background-color: #ede7f6; } /* Expert */
+        .skill-level-5 { background-color: #fce4ec; } /* Mastery/Research */
+
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-bottom: 5px; /* Space below summary before content */
+            display: flex; /* Use flexbox */
+            align-items: center; /* Align items vertically */
+        }
+        details summary h4, details summary h5 {
+            display: inline; /* Keep headers inline */
+            margin: 0; /* Remove default margins */
+            margin-right: 10px; /* Add space before skill tag */
+        }
+
+        details[open] > summary {
+            background-color: #eee;
+        }
+        details > div { /* Content wrapper for L3/L4 */
+           padding: 10px 0 10px 10px; /* Add padding inside details */
+           border-top: 1px dashed #ccc;
+        }
+
+        /* Tooltip styling (using title attribute for simplicity) */
+        [title] {
+            cursor: help;
+            /* border-bottom: 1px dotted #000; Optional visual cue */
+        }
+
+        /* Milestone Gate Styling */
+        .milestone-gate {
+            border: 2px solid #FF9800; /* Orange border */
+            background-color: #fff3e0; /* Light orange background */
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .milestone-gate h5 {
+            margin-top: 0;
+            color: #e65100; /* Darker orange */
+        }
+        .milestone-gate ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        /* Glossary styling (if used separately) */
+        #glossary dl { margin-left: 20px; }
+        #glossary dt { font-weight: bold; color: #003366; }
+        #glossary dd { margin-bottom: 10px; }
+
+        /* Link styling */
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .resource a { /* Resource links */
+             font-weight: bold;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            h1 { font-size: 1.8em; }
+            h2 { font-size: 1.5em; }
+            h3 { font-size: 1.3em; }
+            h4 { font-size: 1.1em; }
+            h5 { font-size: 1.0em; }
+            h6 { font-size: 0.95em; }
+
+            .module.level-1 { padding: 10px; }
+            .topic.level-2 { padding-left: 10px; margin-left: 0; }
+            .concept.level-3 { padding-left: 8px; margin-left: 5px; }
+            .integration-point.level-4 { padding-left: 8px; margin-left: 10px; }
+            .resource-list.level-5 { padding-left: 10px; margin-left: 15px; }
+            .resource.level-5 { padding: 6px; }
+        }
+
+    </style>
+
+
+    <div class="container">
+
+        <section id="legend">
+            <h2>Legend</h2>
+            <p>This legend explains the structure and styling used in the learning path.</p>
+            <ul>
+                <li><strong>Hierarchy Levels (Visualized by Indentation, Borders, Backgrounds):</strong>
+                    <ul>
+                        <li><span style="border: 2px solid #003366; background-color: #e6f0ff; padding: 2px 5px; border-radius: 3px;">Module (L1)</span>: Broadest category (e.g., Foundations).</li>
+                        <li><span style="border-left: 5px solid #0066cc; background-color: #f0f8ff; padding: 2px 5px;">Topic/Area (L2)</span>: Major subject area within a module (e.g., Core Programming).</li>
+                        <li><span style="border-left: 4px solid #3399ff; background-color: #ffffff; padding: 2px 5px; box-shadow: 1px 1px 3px rgba(0,0,0,0.1);">Concept/Sub-Topic (L3)</span>: Specific theoretical or practical concept (Collapsible `<details>`).</details></li>
+                        <li><span style="border-left: 3px solid #66ccff; background-color: #fafcff; padding: 2px 5px;">Integration Point (L4)</span>: Mini-projects or points integrating multiple concepts (Collapsible `<details>`).</details></li>
+                        <li><span style="border-left: 2px solid #99ddff; background-color: #fff; padding: 2px 5px; border: 1px solid #eee;">Resource/Action (L5)</span>: Smallest unit - a book chapter, article, exercise, setup task, project task.</li>
+                    </ul>
+                </li>
+                <li><strong>Resource Types (Visualized by Icon &amp; Class `.resource-type-X`):</strong>
+                    <ul>
+                        <li><span class="resource-type-book">📚 Book Chapter/Section</span></li>
+                        <li><span class="resource-type-course">🎓 Course Module/Lecture</span></li>
+                        <li><span class="resource-type-paper">📜 Research Paper</span></li>
+                        <li><span class="resource-type-article">📰 Article/Blog Post</span></li>
+                        <li><span class="resource-type-docs">🔧 Documentation</span></li>
+                        <li><span class="resource-type-tool">🛠️ Tool Mastery/Practice</span></li>
+                        <li><span class="resource-type-project-task">🎯 Project Task</span></li>
+                        <li><span class="resource-type-exercise">🏋️ Exercise/Problem Set</span></li>
+                        <li><span class="resource-type-setup">⚙️ Environment Setup/Configuration</span></li>
+                        <li><span class="resource-type-community">👥 Community/Forum Resource</span></li>
+                        <li><span class="resource-type-math">📐 Math Topic/Resource</span></li>
+                        <li><span class="resource-type-theory">🧠 Theory Topic/Resource</span></li>
+                    </ul>
+                </li>
+                 <li><strong>Status Indicators (Visualized by Border/Background &amp; Class `.status-Y`):</strong>
+                    <ul>
+                        <li><span style="border-left: 5px solid #FFC107; padding: 2px 5px;">Optional (.status-optional)</span>: Recommended but not strictly required.</li>
+                        <li><span style="border-left: 5px solid #03A9F4; padding: 2px 5px;">Alternative (.status-alternative)</span>: An alternative resource or path (e.g., FLOSS vs proprietary).</li>
+                        <li><span style="border: 2px dashed #F44336; background-color: #ffebee; padding: 2px 5px;">Conflict (.status-conflict)</span>: Potential conflict with user goals (technical or ideological).</li>
+                        <li><span style="border-left: 5px solid #9E9E9E; font-style: italic; color: #777; padding: 2px 5px;">Placeholder (.status-placeholder)</span>: Module/Topic for future detail.</li>
+                    </ul>
+                </li>
+                 <li><strong>Skill Level Tags (`.skill-tag`, `.skill-level-X`):</strong> Indicates target proficiency.
+                    <ul>
+                       <li><span class="skill-tag skill-level-0">Novice</span></li>
+                       <li><span class="skill-tag skill-level-1">Beginner</span></li>
+                       <li><span class="skill-tag skill-level-2">Intermediate</span></li>
+                       <li><span class="skill-tag skill-level-3">Advanced</span></li>
+                       <li><span class="skill-tag skill-level-4">Expert</span></li>
+                       <li><span class="skill-tag skill-level-5">Mastery/Research</span></li>
+                    </ul>
+                </li>
+                <li><strong>Other Elements:</strong>
+                    <ul>
+                        <li><code>.prerequisites</code>: Lists required knowledge/skills. <strong style="color: #c00;">Critical prerequisites</strong> are bolded. Links point to the element ID (e.g., `#concept-ABC`) where the prerequisite is covered.</li>
+                        <li><code>.foundation-links</code>: Links from practical L5 nodes back to the defining L3/L6 theoretical concepts.</li>
+                        <li><code>.rationale</code>: Explains *why* a resource/topic is included or a choice was made.</li>
+                        <li><code>title="..."</code> attribute (hover for tooltip): Provides hints, common pitfalls, or debugging strategies for challenging L5 nodes.</li>
+                        <li><code>.milestone-gate</code>: Represents a significant checkpoint requiring demonstration of acquired skills before proceeding.</li>
+                        <li>`<details>`/`<summary>`: Used for L3 Concepts and L4 Integration points to allow collapsing sections for better navigation of the large plan.</summary></details></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <h1>Project Genesis: Subversion Catalyst - Learning Trajectory</h1>
+        
+        <p><strong>User Profile Summary:</strong> No formal programming 
+experience, strong pre-calc math (needs factoring practice), basic 
+Gentoo install comfort (no scripting/maintenance), conceptual ML 
+understanding, high-intensity/rigor/density learning style 
+(action/project-based, associative), expects struggle but needs low 
+friction, cost no object, direct instruction preferred, prioritize 
+low-latency tech choices.</p>
+        <p><strong>Target Roles (Initial):</strong> System Administrator / Programming Associate @ NC Target Companies.</p>
+        <p><strong>Primary Languages (Initial Focus):</strong> C (Mastery), Rust (Foundational), Bash (Scripting).</p>
+
+        <!-- Module 0: Foundations -->
+        <section class="module level-1" id="module-0">
+            <h2>Module 0: Laying the Cornerstone - Computation, Tools, and C Fundamentals</h2>
+            <p class="rationale">Rationale: This module establishes the 
+absolute bedrock: core mathematical tools, the Gentoo Linux environment,
+ essential developer tooling (Vim, Git, Bash), fundamental computational
+ concepts, and the C programming language. Rigorous C mastery is 
+prioritized early as it underpins nearly all low-level systems work. 
+Tooling is introduced immediately for practical application.</p>
+
+            <article class="topic level-2 area-math" id="topic-math-prereqs">
+                <h3>Area: Foundational Mathematics</h3>
+                <p class="rationale">Rationale: Addressing the user's 
+specific need and ensuring readiness for basic programming concepts 
+involving logic and algebra.</p>
+
+                <details class="concept level-3 skill-level-1" id="concept-poly-factoring">
+                    <summary><h4>Concept: Polynomial Factoring <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-math status-critical" id="action-khan-factoring-intro">
+                                <h6>Khan Academy: Factoring Introduction</h6>
+                                <p>Focus: Basic concepts, greatest common factor, grouping.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <strong class="prereq-critical">Algebra II Concepts</strong> (Assumed complete)</li></ul>
+                                <a href="https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:quadratics-multiplying-factoring/x2f8bb11595b61c86:factor-quadratics-grouping/v/factoring-trinomials-by-grouping-1" target="_blank" rel="noopener noreferrer">[Resource Link]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Directly addresses user's specified need. Khan Academy offers interactive practice.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-math status-critical" id="action-khan-factoring-quad">
+                                <h6>Khan Academy: Factoring Quadratics</h6>
+                                <p>Focus: Trinomials (a=1, a≠1), perfect squares, difference of squares.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-khan-factoring-intro" class="prereq-critical">#action-khan-factoring-intro</a></li></ul>
+                                <a href="https://www.khanacademy.org/math/algebra/x2f8bb11595b61c86:quadratics-multiplying-factoring/x2f8bb11595b61c86:factor-quadratics-strategy/v/strategy-in-factoring-quadratics-1" target="_blank" rel="noopener noreferrer">[Resource Link]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                            <li class="resource level-5 resource-type-math status-critical" id="action-khan-factoring-poly">
+                                <h6>Khan Academy: Factoring Higher Degree Polynomials</h6>
+                                <p>Focus: Sum/difference of cubes, grouping, synthetic division concepts (optional for now, revisit if needed).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-khan-factoring-quad" class="prereq-critical">#action-khan-factoring-quad</a></li></ul>
+                                <a href="https://www.khanacademy.org/math/algebra2/x2ec2f6f830c9fb89:poly-factor/x2ec2f6f830c9fb89:factor-higher-deg/v/factoring-sum-of-cubes" target="_blank" rel="noopener noreferrer">[Resource Link]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise status-critical" id="action-factoring-practice-1">
+                                <h6>Practice: Factoring Problems</h6>
+                                <p>Focus: Solve numerous factoring 
+problems (quadratic, grouping) from pre-calc textbook or online 
+resources (e.g., Paul's Online Math Notes).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-khan-factoring-poly" class="prereq-critical">#action-khan-factoring-poly</a></li></ul>
+                                <a href="https://tutorial.math.lamar.edu/Classes/Alg/Factoring.aspx" target="_blank" rel="noopener noreferrer">[Resource Link - Paul's Notes]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Essential for internalizing the mechanics required for algebraic manipulation in algorithm analysis and proofs.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="concept level-3 skill-level-1" id="concept-basic-logic">
+                    <summary><h4>Concept: Basic Propositional Logic <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-math" id="action-logic-intro-mcs">
+                                <h6>Mathematics for Computer Science (Lehman, Leighton, Meyer): Chapter 3 (Propositions)</h6>
+                                <p>Focus: Propositions, logical connectives (AND, OR, NOT, IMPLIES), truth tables, basic equivalences.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <strong class="prereq-critical">Basic Reading Comprehension</strong></li></ul>
+                                <a href="https://courses.csail.mit.edu/6.042/spring18/mcs.pdf" target="_blank" rel="noopener noreferrer">[Resource Link - PDF]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Introduces 
+foundational logic necessary for understanding control flow in 
+programming and later proofs. MCS is rigorous and freely available.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-logic-practice-mcs">
+                                <h6>Practice: MCS Chapter 3 Problems</h6>
+                                <p>Focus: Apply logical connective rules, build truth tables.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-logic-intro-mcs">#action-logic-intro-mcs</a></li></ul>
+                                <!-- Link placeholder for specific exercises -->
+                                <a>[Resource Link - Exercises in PDF]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+            </article>
+
+            <article class="topic level-2 area-tooling" id="topic-gentoo-setup">
+                <h3>Area: Gentoo Environment Setup &amp; Refinement</h3>
+                <p class="rationale">Rationale: Solidify user's existing
+ Gentoo base and establish a robust development environment. This is 
+direct action and prerequisite for all further coding.</p>
+
+                <details class="concept level-3 skill-level-1" id="concept-gentoo-install-review">
+                    <summary><h4>Concept: Installation Review &amp; Verification <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                        <ul class="resource-list level-5">
+                           <li class="resource level-5 resource-type-docs" id="action-gentoo-handbook-review">
+                                <h6>Gentoo Handbook (AMD64): Review Key Sections</h6>
+                                <p>Focus: Quickly review sections on 
+partitioning, base system installation, kernel configuration choices 
+made, bootloader (GRUB). Verify current setup against handbook 
+recommendations.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <strong class="prereq-critical">User's existing install experience</strong></li></ul>
+                                <a href="https://wiki.gentoo.org/wiki/Handbook:AMD64" target="_blank" rel="noopener noreferrer">[Resource Link - Gentoo Wiki]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Reinforce understanding of the installation process and identify any potential issues early.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-setup" id="action-gentoo-verify-boot">
+                                <h6>Task: Verify Boot Process &amp; Basic System Functionality</h6>
+                                <p>Focus: Ensure system boots reliably, 
+network is functional, user can log in, basic commands work. 
+Troubleshoot minor issues using Gentoo Wiki/Forums.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-gentoo-handbook-review">#action-gentoo-handbook-review</a></li></ul>
+                                <a href="https://wiki.gentoo.org/wiki/Main_Page" target="_blank" rel="noopener noreferrer">[Resource Link - Gentoo Wiki]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Common Pitfalls: Incorrect GRUB config, missing kernel modules for network/storage, filesystem errors. Debug: Check dmesg, boot logs, wiki troubleshooting sections.">Setup &amp; Verification</div>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="concept level-3 skill-level-1" id="concept-portage-basics">
+                    <summary><h4>Concept: Portage Fundamentals <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-docs" id="action-portage-intro-wiki">
+                                <h6>Gentoo Wiki: Portage Introduction</h6>
+                                <p>Focus: `emerge` basics (`--sync`, 
+`--update`, `--ask`, `--search`), `/etc/portage/make.conf` basics 
+(CFLAGS, MAKEOPTS), USE flags concept.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-gentoo-verify-boot">#action-gentoo-verify-boot</a></li></ul>
+                                <a href="https://wiki.gentoo.org/wiki/Portage" target="_blank" rel="noopener noreferrer">[Resource Link - Gentoo Wiki]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Portage is central to Gentoo; basic proficiency is required for installing any software.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-setup" id="action-portage-emerge-tools">
+                                <h6>Task: Install Core Development Tools via Emerge</h6>
+                                <p>Focus: Install `app-editors/neovim` 
+(or `app-editors/vim`), `dev-vcs/git`, `sys-devel/gcc`, 
+`sys-devel/clang` (optional alternative), `sys-devel/make`, 
+`sys-devel/gdb`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-portage-intro-wiki">#action-portage-intro-wiki</a></li></ul>
+                                <a>[Action: Use `emerge -av &lt;package&gt;`]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Circular dependencies (rare for these), USE flag conflicts (check emerge output), slow compilation (adjust MAKEOPTS). Debug: Read emerge messages carefully, use `equery uses &lt;package&gt;` to check USE flags, consult wiki.">Setup &amp; Tool Installation</div>
+                            </li>
+                            <li class="resource level-5 resource-type-docs" id="action-portage-use-flags">
+                                <h6>Gentoo Wiki: USE Flags</h6>
+                                <p>Focus: Understanding global vs package USE flags, `/etc/portage/package.use`, how flags control build-time features.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-portage-intro-wiki">#action-portage-intro-wiki</a></li></ul>
+                                <a href="https://wiki.gentoo.org/wiki/USE_flag" target="_blank" rel="noopener noreferrer">[Resource Link - Gentoo Wiki]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Understanding USE flags is key to optimizing builds and managing dependencies effectively in Gentoo.</div>
+                            </li>
+                         </ul>
+                    </div>
+                </details>
+                 <details class="concept level-3 skill-level-2" id="concept-gentoo-kernel">
+                    <summary><h4>Concept: Kernel Management Basics <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-docs" id="action-gentoo-kernel-overview">
+                                <h6>Gentoo Wiki: Kernel Overview</h6>
+                                <p>Focus: Concepts of kernel, modules, different kernel sources (`gentoo-sources`), manual vs automated config tools.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-portage-use-flags">#action-portage-use-flags</a></li></ul>
+                                <a href="https://wiki.gentoo.org/wiki/Kernel/Overview" target="_blank" rel="noopener noreferrer">[Resource Link - Gentoo Wiki]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Essential for understanding the core of the OS and later tuning/modification.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-docs" id="action-gentoo-genkernel">
+                                <h6>Gentoo Wiki: Genkernel</h6>
+                                <p>Focus: Using `genkernel all` for a safe, automated initial kernel build and initramfs generation.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-gentoo-kernel-overview">#action-gentoo-kernel-overview</a></li></ul>
+                                <a href="https://wiki.gentoo.org/wiki/Genkernel" target="_blank" rel="noopener noreferrer">[Resource Link - Gentoo Wiki]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Provides a reliable way to build the kernel initially before manual configuration.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-setup" id="action-gentoo-build-kernel">
+                                <h6>Task: Build and Install Kernel using Genkernel</h6>
+                                <p>Focus: Run `emerge sys-kernel/gentoo-sources sys-kernel/genkernel`, then `genkernel all`. Update GRUB (`grub-mkconfig`). Reboot.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-gentoo-genkernel">#action-gentoo-genkernel</a></li></ul>
+                                <a>[Action: Execute commands]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Forgetting `grub-mkconfig`, boot failures if critical hardware drivers missed (unlikely with genkernel defaults). Debug: Check genkernel logs, use a live USB to chroot and fix GRUB/kernel if needed.">Kernel Build &amp; Install</div>
+                            </li>
+                         </ul>
+                    </div>
+                </details>
+            </article>
+
+            <article class="topic level-2 area-tooling" id="topic-core-devtools">
+                <h3>Area: Core Developer Toolchain Setup &amp; Basics</h3>
+                <p class="rationale">Rationale: Establish foundational proficiency in essential development tools (Editor, VCS, Build System, Debugger) used daily.</p>
+
+                <details class="concept level-3 skill-level-1" id="concept-vim-basics">
+                    <summary><h4>Concept: Vim/Neovim Fundamentals <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-tool" id="action-vimtutor">
+                                <h6>Vim Tutor (`vimtutor` command)</h6>
+                                <p>Focus: Interactive tutorial covering basic movement (hjkl), modes (insert, normal, visual), saving, exiting, basic editing.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-portage-emerge-tools">#action-portage-emerge-tools</a></li></ul>
+                                <a>[Action: Run `vimtutor` in terminal]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">The canonical, built-in way to learn Vim basics directly. User preference for Vim/Neovim.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-article" id="action-vim-basics-tutorial">
+                                <h6>Online Tutorial: A Good Vim Basics Tutorial</h6>
+                                <p>Focus: Reinforce `vimtutor` concepts,
+ cover basic configuration (`.vimrc`/`init.vim`), simple navigation 
+commands (`w`, `b`, `e`, `^`, `$`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-vimtutor">#action-vimtutor</a></li></ul>
+                                <a href="https://www.openvim.com/" target="_blank" rel="noopener noreferrer">[Resource Link - OpenVim Interactive]</a>
+                                <a href="https://vim.rtorr.com/" target="_blank" rel="noopener noreferrer">[Alternative - Vim Cheat Sheet]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                            <li class="resource level-5 resource-type-setup" id="action-nvim-basic-config">
+                                <h6>Task: Basic Neovim Configuration</h6>
+                                <p>Focus: Create 
+`~/.config/nvim/init.vim` (or `init.lua`). Set basic options: `syntax 
+on`, `set number`, `set relativenumber`, `set tabstop=4`, `set 
+shiftwidth=4`, `set expandtab`. Install `vim-plug` or `packer.nvim` 
+(plugin manager).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-vim-basics-tutorial">#action-vim-basics-tutorial</a></li></ul>
+                                <a href="https://github.com/junegunn/vim-plug" target="_blank" rel="noopener noreferrer">[Resource Link - vim-plug]</a>
+                                <a href="https://github.com/wbthomason/packer.nvim" target="_blank" rel="noopener noreferrer">[Alternative - packer.nvim (Lua)]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Typos in config file, incorrect plugin manager setup. Debug: Start nvim, check for errors. Consult plugin manager docs.">Neovim Configuration</div>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-vim-practice-1">
+                                <h6>Practice: Basic Editing Tasks</h6>
+                                <p>Focus: Use Vim/Neovim exclusively for
+ editing simple text files, handbook notes, config files. Practice 
+navigation, insertion, deletion, saving.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-nvim-basic-config">#action-nvim-basic-config</a></li></ul>
+                                <a>[Action: Daily Practice]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Consistent practice is crucial for Vim proficiency.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                 <details class="concept level-3 skill-level-1" id="concept-git-basics">
+                    <summary><h4>Concept: Git Fundamentals <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-course" id="action-git-missing-sem">
+                                <h6>Missing Semester: Version Control (Git) Lecture</h6>
+                                <p>Focus: Conceptual overview of VCS, 
+core Git model (repository, staging area, commit), basic commands 
+(`init`, `add`, `commit`, `status`, `log`, `diff`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-portage-emerge-tools">#action-portage-emerge-tools</a></li></ul>
+                                <a href="https://missing.csail.mit.edu/2020/version-control/" target="_blank" rel="noopener noreferrer">[Resource Link - Missing Semester]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Provides a solid conceptual foundation before diving into commands.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-progit-ch1-2">
+                                <h6>Pro Git Book: Chapters 1 &amp; 2</h6>
+                                <p>Focus: Getting Started (Installation,
+ First-Time Setup), Git Basics (Getting a Repo, Recording Changes, 
+Viewing History, Undoing Things).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-git-missing-sem">#action-git-missing-sem</a></li></ul>
+                                <a href="https://git-scm.com/book/en/v2" target="_blank" rel="noopener noreferrer">[Resource Link - Pro Git]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">The definitive 
+Git reference, free online. Chapters 1-2 cover the essential core 
+workflow. "&gt; K&amp;R" standard met by depth and authority.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-git-practice-local">
+                                <h6>Practice: Local Repository Workflow</h6>
+                                <p>Focus: Create a local directory, `git
+ init`. Create files, `git add .`, `git commit -m "message"`. Make 
+changes, view `git status`, `git diff`. View history with `git log`. 
+Practice modifying commits (`--amend`), un-staging (`git restore 
+--staged`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-progit-ch1-2">#action-progit-ch1-2</a></li></ul>
+                                <a>[Action: Perform commands in terminal]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Forgetting to `git add` before `commit`, confusing staging area with repository, writing unhelpful commit messages. Debug: Use `git status` frequently, `git log --oneline --graph` for history visualization.">Git Local Workflow Practice</div>
+                            </li>
+                            <li class="resource level-5 resource-type-docs" id="action-git-branching-basics-progit">
+                                <h6>Pro Git Book: Chapter 3 (Branching Basics)</h6>
+                                <p>Focus: What is a branch, basic branching (`branch`, `checkout`/`switch`), basic merging (`merge`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-git-practice-local">#action-git-practice-local</a></li></ul>
+                                <a href="https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell" target="_blank" rel="noopener noreferrer">[Resource Link - Pro Git Ch 3.1]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-git-practice-branching">
+                                <h6>Practice: Basic Branching and Merging</h6>
+                                <p>Focus: In the local repo, create a 
+new branch (`git branch feature`), switch to it (`git switch feature`). 
+Make commits. Switch back to `main`. Make another commit. Merge the 
+feature branch (`git merge feature`). Resolve a simple merge conflict.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-git-branching-basics-progit">#action-git-branching-basics-progit</a></li></ul>
+                                <a>[Action: Perform commands in terminal]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Forgetting which branch you are on, merge conflicts. Debug: Use `git status` and `git branch`. Read merge conflict markers carefully (&lt;&lt;&lt;&lt;&lt;, =====, &gt;&gt;&gt;&gt;&gt;).">Git Branching Practice</div>
+                            </li>
+                             <li class="resource level-5 resource-type-setup" id="action-github-setup">
+                                <h6>Task: GitHub Account Setup &amp; SSH Key</h6>
+                                <p>Focus: Create GitHub account. Generate SSH key (`ssh-keygen`), add public key to GitHub settings.</p>
+                                <ul class="prerequisites"><li>Prerequisite: Basic web browsing</li></ul>
+                                <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" target="_blank" rel="noopener noreferrer">[Resource Link - GitHub Docs]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-git-practice-remote">
+                                <h6>Practice: Remote Repository Workflow (GitHub)</h6>
+                                <p>Focus: Create a new repo on GitHub. 
+Add it as a remote (`git remote add origin ...`). Push main branch (`git
+ push -u origin main`). Create local feature branch, make commits, push 
+branch (`git push -u origin feature`). Create Pull Request on GitHub 
+(basic). Merge PR on GitHub. Pull changes back to local main (`git 
+switch main`, `git pull origin main`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-git-practice-branching">#action-git-practice-branching</a>, <a href="#action-github-setup">#action-github-setup</a></li></ul>
+                                <a href="https://docs.github.com/en/get-started/quickstart" target="_blank" rel="noopener noreferrer">[Resource Link - GitHub Quickstart]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: SSH key issues, forgetting `-u` on first push, push/pull conflicts if remote changed. Debug: Check `ssh -T git@github.com`. Use `git pull` before pushing if remote has changed.">Git Remote Workflow</div>
+                            </li>
+                         </ul>
+                    </div>
+                </details>
+
+                 <details class="concept level-3 skill-level-1" id="concept-make-basics">
+                    <summary><h4>Concept: Make Fundamentals <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-article" id="action-makefile-tutorial-basic">
+                                <h6>Makefile Tutorial: Chapters 1-4</h6>
+                                <p>Focus: Introduction, simple makefile (targets, dependencies, recipes), using variables, automatic variables.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-portage-emerge-tools">#action-portage-emerge-tools</a>, Basic C compilation (`gcc hello.c -o hello`)</li></ul>
+                                <a href="https://makefiletutorial.com/" target="_blank" rel="noopener noreferrer">[Resource Link - Makefile Tutorial]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">A clear, concise introduction to Make's core concepts. Essential for compiling C projects.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-make-practice-simple-c">
+                                <h6>Practice: Simple C Project Makefile</h6>
+                                <p>Focus: Create a small C project 
+(e.g., `main.c`, `helper.h`, `helper.c`). Write a Makefile to compile 
+`main.c` and `helper.c` separately into object files (`.o`), then link 
+them into an executable. Use variables for compiler (`CC=gcc`) and flags
+ (`CFLAGS=-Wall -g`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-makefile-tutorial-basic">#action-makefile-tutorial-basic</a></li></ul>
+                                <a>[Action: Create files, write Makefile, run `make`]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Using spaces instead of tabs for recipes, incorrect dependency specification, typos. Debug: Check for tab errors (use `cat -ET Makefile`). Run `make -n` (dry run) or `make -d` (debug).">Makefile Practice (Simple C)</div>
+                            </li>
+                         </ul>
+                    </div>
+                </details>
+
+                 <details class="concept level-3 skill-level-1" id="concept-gdb-basics">
+                    <summary><h4>Concept: GDB Fundamentals <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-docs" id="action-gdb-beejs-guide">
+                                <h6>Beej's Quick Guide to GDB</h6>
+                                <p>Focus: Compiling with `-g`, starting 
+GDB, breakpoints (`b`), running (`r`), stepping (`n`, `s`), continuing 
+(`c`), printing variables (`p`), backtrace (`bt`), quit (`q`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-portage-emerge-tools">#action-portage-emerge-tools</a>, Basic C compilation/execution</li></ul>
+                                <a href="https://beej.us/guide/bggdb/" target="_blank" rel="noopener noreferrer">[Resource Link - Beej's Guide]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Beej's guides are practical and beginner-friendly. Covers the essential commands.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-gdb-practice-simple-c">
+                                <h6>Practice: Debugging Simple C Program</h6>
+                                <p>Focus: Compile the C project from <a href="#action-make-practice-simple-c">#action-make-practice-simple-c</a>
+ with `-g`. Start GDB (`gdb ./executable`). Set breakpoints at `main` 
+and a function in `helper.c`. Run. Step through code using `n` and `s`. 
+Print variable values. Use `bt` after stepping into `helper` function.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-gdb-beejs-guide">#action-gdb-beejs-guide</a>, <a href="#action-make-practice-simple-c">#action-make-practice-simple-c</a></li></ul>
+                                <a>[Action: Perform GDB commands]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Forgetting `-g` flag, setting breakpoints incorrectly (use `b file:line` or `b function`), confusing `n` (next) and `s` (step). Debug: Use `info breakpoints`. Type `help &lt;command&gt;`.">GDB Practice (Simple C)</div>
+                            </li>
+                            <li class="resource level-5 resource-type-docs" id="action-gdb-missing-sem">
+                                <h6>Missing Semester: Debugging and Profiling</h6>
+                                <p>Focus: Review GDB basics, introduce basic profiling concepts (though profiling tools like `perf` come later).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-gdb-practice-simple-c">#action-gdb-practice-simple-c</a></li></ul>
+                                <a href="https://missing.csail.mit.edu/2020/debugging-profiling/" target="_blank" rel="noopener noreferrer">[Resource Link - Missing Semester]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Provides context and reinforces GDB usage within a broader developer workflow.</div>
+                            </li>
+                         </ul>
+                    </div>
+                </details>
+            </article>
+
+             <article class="topic level-2 area-programming" id="topic-c-intro">
+                <h3>Area: C Programming - Core Fundamentals</h3>
+                 <p class="rationale">Rationale: Achieve deep mastery of
+ C, focusing on low-level aspects, memory management, and robust 
+practices, exceeding the K&amp;R standard significantly. This is 
+critical for all subsequent systems work and performance optimization.</p>
+
+                <details class="concept level-3 skill-level-1" id="concept-c-basics-syntax">
+                    <summary><h4>Concept: C Syntax, Types, Operators, Control Flow <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-book" id="action-modernc-ch1-4">
+                                <h6>Modern C (Gustedt): Chapters 1-4</h6>
+                                <p>Focus: Introduction, Basic Concepts 
+(compilation, execution), Types (integers, floats, chars), Operators, 
+Expressions, Control Flow (if, switch, for, while).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#concept-basic-logic">#concept-basic-logic</a>, <a href="#action-portage-emerge-tools">#action-portage-emerge-tools</a></li></ul>
+                                <a href="https://gustedt.gitlabpages.inria.fr/modern-c/modern-c.pdf" target="_blank" rel="noopener noreferrer">[Resource Link - PDF]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Rigorous, modern 
+introduction to C fundamentals. Freely available. "&gt; K&amp;R" 
+standard met by focus on modern C standards and rigor.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-c-basics-exercism">
+                                <h6>Exercism C Track: Basic Exercises</h6>
+                                <p>Focus: "Hello World", "Two Fer", "Leap", "Raindrops". Practice basic syntax, control flow, functions.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch1-4">#action-modernc-ch1-4</a></li></ul>
+                                <a href="https://exercism.org/tracks/c" target="_blank" rel="noopener noreferrer">[Resource Link - Exercism]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Provides immediate hands-on practice with feedback.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-c-compile-debug-practice">
+                                <h6>Practice: Compiling and Debugging Basics</h6>
+                                <p>Focus: Compile exercises using `gcc 
+-Wall -Wextra -std=c11 -g`. Use GDB (`b`, `r`, `n`, `p`) to step through
+ and inspect variables.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-c-basics-exercism">#action-c-basics-exercism</a>, <a href="#concept-gdb-basics">#concept-gdb-basics</a></li></ul>
+                                <a>[Action: Compile and debug Exercism solutions]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Compiler warnings ignored, incorrect GDB commands, misunderstanding variable scope in debugger. Debug: Address ALL compiler warnings. Use GDB `help`.">Compile &amp; Debug Practice</div>
+                            </li>
+                         </ul>
+                    </div>
+                </details>
+
+                <details class="concept level-3 skill-level-1" id="concept-c-functions-scope">
+                    <summary><h4>Concept: Functions, Scope, Storage Classes <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                        <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-modernc-ch5">
+                                <h6>Modern C (Gustedt): Chapter 5 (Functions)</h6>
+                                <p>Focus: Function definition, 
+declaration, parameters, return values, scope (block, file), storage 
+classes (auto, static, extern, register - conceptual).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch1-4">#action-modernc-ch1-4</a></li></ul>
+                                <a href="https://gustedt.gitlabpages.inria.fr/modern-c/modern-c.pdf" target="_blank" rel="noopener noreferrer">[Resource Link - PDF]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-kingc-ch9-10">
+                                <h6>C Programming (King): Chapters 9 (Functions), 10 (Program Organization)</h6>
+                                <p>Focus: Alternative explanation, recursion basics, header files, multi-file projects.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch5">#action-modernc-ch5</a></li></ul>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">King provides 
+excellent, detailed explanations and examples, complementing Modern C. 
+"&gt; K&amp;R" standard met by depth and clarity.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-c-functions-exercism">
+                                <h6>Exercism C Track: Function/Scope Exercises</h6>
+                                <p>Focus: "Armstrong Numbers", "Difference of Squares", "Hamming". Practice function design, maybe recursion.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch9-10">#action-kingc-ch9-10</a></li></ul>
+                                <a href="https://exercism.org/tracks/c" target="_blank" rel="noopener noreferrer">[Resource Link - Exercism]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-make-multifile-practice">
+                                <h6>Practice: Multi-File Project with Make</h6>
+                                <p>Focus: Refactor a previous exercise (or create a new small program) into multiple `.c` and `.h` files. Update the Makefile (<a href="#action-make-practice-simple-c">#action-make-practice-simple-c</a>) to handle compilation and linking.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-c-functions-exercism">#action-c-functions-exercism</a>, <a href="#action-make-practice-simple-c">#action-make-practice-simple-c</a></li></ul>
+                                <a>[Action: Refactor code, modify Makefile]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Missing header guards, incorrect include paths in Makefile, linker errors (undefined references). Debug: Use `-I.` flag in CFLAGS if needed. Check for typos in function names/signatures.">Makefile Multi-File Practice</div>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="concept level-3 skill-level-2" id="concept-c-pointers-memory">
+                    <summary><h4>Concept: Pointers and Memory Management <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-modernc-ch6">
+                                <h6>Modern C (Gustedt): Chapter 6 (Pointers and Arrays)</h6>
+                                <p>Focus: Pointer basics, address-of 
+(`&amp;`), dereference (`*`), relationship between pointers and arrays, 
+pointer arithmetic fundamentals.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch9-10">#action-kingc-ch9-10</a></li></ul>
+                                <a href="https://gustedt.gitlabpages.inria.fr/modern-c/modern-c.pdf" target="_blank" rel="noopener noreferrer">[Resource Link - PDF]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Core C concept, Modern C provides a rigorous foundation.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-kingc-ch11-12-13-17">
+                                <h6>C Programming (King): Ch 11 (Pointers), 12 (Pointer Arithmetic), 13 (Strings), 17 (Advanced Pointers)</h6>
+                                <p>Focus: Deeper dive into pointer 
+usage, pointer arithmetic details and pitfalls, C-style strings 
+(`char*`), pointers to pointers, function pointers, dynamic memory 
+allocation (`malloc`, `free`, `calloc`, `realloc`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch6">#action-modernc-ch6</a></li></ul>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">King's detailed treatment is essential for mastering pointers and manual memory management safely. Crucial for low-level goals.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-article" id="action-pointers-beej">
+                                <h6>Beej's Guide to C Programming: Pointers</h6>
+                                <p>Focus: Alternative, practical explanation of pointers with examples.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch6">#action-modernc-ch6</a></li></ul>
+                                <a href="https://beej.us/guide/bgc/html/split/pointers.html" target="_blank" rel="noopener noreferrer">[Resource Link - Beej's Guide]</a>
+                                <span class="skill-tag skill-level-2 status-alternative">Intermediate</span>
+                                <div class="rationale">Beej provides a different, often more intuitive angle on complex C topics.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-c-pointers-exercism">
+                                <h6>Exercism C Track: Pointer/Memory Exercises</h6>
+                                <p>Focus: "Reverse String", "Linked List", "Custom Set". Problems requiring pointer manipulation and potentially dynamic memory.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch11-12-13-17">#action-kingc-ch11-12-13-17</a></li></ul>
+                                <a href="https://exercism.org/tracks/c" target="_blank" rel="noopener noreferrer">[Resource Link - Exercism]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-gdb-debug-pointers">
+                                <h6>Practice: Debugging Pointer Issues with GDB</h6>
+                                <p>Focus: Use GDB to inspect memory 
+(`x`), print pointer values (`p ptr`), print pointed-to values (`p 
+*ptr`), examine stack (`bt`), detect segmentation faults and identify 
+their cause.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-c-pointers-exercism">#action-c-pointers-exercism</a>, <a href="#action-gdb-practice-simple-c">#action-gdb-practice-simple-c</a></li></ul>
+                                <a>[Action: Debug pointer exercises/examples]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Dangling pointers, null pointer dereferences, buffer overflows, memory leaks, double frees. Debug Tools: GDB (`bt`, `x`, `p`), Valgrind Memcheck (introduce next).">GDB Pointer Debugging</div>
+                            </li>
+                            <li class="resource level-5 resource-type-tool" id="action-valgrind-memcheck-intro">
+                                <h6>Tool: Valgrind Memcheck Introduction</h6>
+                                <p>Focus: Basic usage (`valgrind 
+--leak-check=full ./executable`). Understanding output for memory errors
+ (invalid read/write, leaks, double frees).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-gdb-debug-pointers">#action-gdb-debug-pointers</a></li></ul>
+                                <a href="https://valgrind.org/docs/manual/mc-manual.html" target="_blank" rel="noopener noreferrer">[Resource Link - Valgrind Docs]</a>
+                                <a href="https://www.youtube.com/watch?v=fvTsFjDuAo4" target="_blank" rel="noopener noreferrer">[Alternative - Tutorial Video]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Valgrind is indispensable for finding memory errors in C. Essential for robustness.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-tool" id="action-valgrind-practice">
+                                <h6>Practice: Using Valgrind Memcheck</h6>
+                                <p>Focus: Run Valgrind on pointer/memory
+ exercises. Intentionally introduce errors (e.g., forget `free`, write 
+past array bounds) and observe Valgrind's output. Fix the errors.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-valgrind-memcheck-intro">#action-valgrind-memcheck-intro</a></li></ul>
+                                <a>[Action: Run valgrind on exercises]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                             <li class="resource level-5 resource-type-book" id="action-effectivec-memory">
+                                <h6>Effective C (Seacord): Memory Management Sections</h6>
+                                <p>Focus: Best practices for safe and robust dynamic memory management.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-valgrind-practice">#action-valgrind-practice</a></li></ul>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-3 status-optional">Advanced</span>
+                                <div class="rationale">Seacord provides 
+expert guidance on writing secure and reliable C, crucial given the 
+project's goals. "&gt; K&amp;R" met by focus on security/robustness.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+                 <details class="concept level-3 skill-level-2" id="concept-c-structs-unions">
+                    <summary><h4>Concept: Structs, Unions, Enums, Typedef <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-modernc-ch7">
+                                <h6>Modern C (Gustedt): Chapter 7 (Derived Types)</h6>
+                                <p>Focus: Defining and using `struct`, `union`, `enum`. Using `typedef` for creating aliases.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch11-12-13-17">#action-kingc-ch11-12-13-17</a></li></ul>
+                                <a href="https://gustedt.gitlabpages.inria.fr/modern-c/modern-c.pdf" target="_blank" rel="noopener noreferrer">[Resource Link - PDF]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-kingc-ch16">
+                                <h6>C Programming (King): Chapter 16 (Structures, Unions, Enumerations)</h6>
+                                <p>Focus: Deeper examples, struct pointers (`-&gt;` operator), self-referential structures (for linked lists).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch7">#action-modernc-ch7</a></li></ul>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-c-structs-exercism">
+                                <h6>Exercism C Track: Struct/Enum Exercises</h6>
+                                <p>Focus: "Clock", "Complex Numbers". Problems involving custom data types.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch16">#action-kingc-ch16</a></li></ul>
+                                <a href="https://exercism.org/tracks/c" target="_blank" rel="noopener noreferrer">[Resource Link - Exercism]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                             <li class="resource level-5 resource-type-article" id="action-c-struct-packing">
+                                <h6>Article: The Lost Art of Structure Packing</h6>
+                                <p>Focus: Understanding memory layout, alignment, padding, and how to control it (briefly).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch16">#action-kingc-ch16</a></li></ul>
+                                <a href="http://www.catb.org/esr/structure-packing/" target="_blank" rel="noopener noreferrer">[Resource Link - ESR]</a>
+                                <span class="skill-tag skill-level-3">Advanced</span>
+                                <div class="rationale">Introduces crucial low-level concepts for performance and hardware interaction.</div>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+                 <details class="concept level-3 skill-level-2" id="concept-c-io-preprocessor">
+                    <summary><h4>Concept: File I/O and Preprocessor <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-modernc-ch8-9">
+                                <h6>Modern C (Gustedt): Ch 8 (I/O), Ch 9 (Preprocessing)</h6>
+                                <p>Focus: Standard I/O (`stdio.h` - 
+`printf`, `scanf`, `fopen`, `fclose`, `fgets`, `fprintf`), Preprocessor 
+directives (`#include`, `#define`, `#ifdef`, macros).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch16">#action-kingc-ch16</a></li></ul>
+                                <a href="https://gustedt.gitlabpages.inria.fr/modern-c/modern-c.pdf" target="_blank" rel="noopener noreferrer">[Resource Link - PDF]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-kingc-ch14-22">
+                                <h6>C Programming (King): Ch 14 (Preprocessor), Ch 22 (Input/Output)</h6>
+                                <p>Focus: Detailed preprocessor examples
+ (macros with arguments, conditional compilation), formatted I/O, binary
+ I/O (`fread`, `fwrite`), file positioning (`fseek`, `ftell`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch8-9">#action-modernc-ch8-9</a></li></ul>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-c-io-exercism">
+                                <h6>Exercism C Track: File I/O Exercises</h6>
+                                <p>Focus: "Word Count". Problems involving reading from/writing to files.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch14-22">#action-kingc-ch14-22</a></li></ul>
+                                <a href="https://exercism.org/tracks/c" target="_blank" rel="noopener noreferrer">[Resource Link - Exercism]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+
+                <integration-point class="integration-point level-4" id="integration-c-mastery-prep">
+                    <summary><h5>Integration: C Mastery &amp; Project 0 Prep</h5></summary>
+                     <div>
+                         <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-exercise" id="action-c-comprehensive-review">
+                                <h6>Review &amp; Practice: Comprehensive C Exercises</h6>
+                                <p>Focus: Revisit difficult Exercism 
+problems or find more challenging C problems online (e.g., Project Euler
+ in C, simple data structure implementations like stacks/queues).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch14-22">#action-kingc-ch14-22</a>, <a href="#concept-c-pointers-memory">#concept-c-pointers-memory</a>, <a href="#concept-c-structs-unions">#concept-c-structs-unions</a></li></ul>
+                                <a href="https://projecteuler.net/" target="_blank" rel="noopener noreferrer">[Resource Link - Project Euler]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Solidify all core C concepts before starting the first significant project.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-docs" id="action-c-stdlib-review">
+                                <h6>Review: C Standard Library Overview</h6>
+                                <p>Focus: Familiarize with common 
+headers (`stdlib.h`, `string.h`, `math.h`, `ctype.h`) and their main 
+functions using man pages or online reference.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch14-22">#action-kingc-ch14-22</a></li></ul>
+                                <a href="https://en.cppreference.com/w/c/header" target="_blank" rel="noopener noreferrer">[Resource Link - cppreference (C section)]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Knowing what's available in the standard library prevents reinventing the wheel.</div>
+                            </li>
+                         </ul>
+                    </div>
+                </integration-point>
+            </article>
+
+             <article class="topic level-2 area-tooling" id="topic-bash-scripting">
+                 <h3>Area: Bash Scripting Fundamentals</h3>
+                 <p class="rationale">Rationale: Essential for 
+automation, system administration, and interacting effectively with the 
+Gentoo/Linux environment. Builds on basic command-line usage.</p>
+
+                 <details class="concept level-3 skill-level-1" id="concept-bash-script-basics">
+                     <summary><h4>Concept: Basic Scripting Constructs <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-article" id="action-bash-missing-sem">
+                                <h6>Missing Semester: Shell Tools and Scripting</h6>
+                                <p>Focus: Shebang (`#!/bin/bash`), 
+variables, arguments (`$1`, `$@`), quotes, command substitution 
+(`$(...)`), basic I/O redirection (`&gt;`, `&gt;&gt;`, `&lt;`), pipes 
+(`|`), exit status (`$?`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#topic-core-devtools">#topic-core-devtools</a> (basic CLI usage)</li></ul>
+                                <a href="https://missing.csail.mit.edu/2020/shell-tools/" target="_blank" rel="noopener noreferrer">[Resource Link - Missing Semester]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Concise introduction to core scripting concepts.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-docs" id="action-bash-guide-basics">
+                                <h6>Bash Guide for Beginners: Chapters 1-5</h6>
+                                <p>Focus: More detailed explanation of shell basics, variables, quoting, simple commands, redirection, pipes.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-bash-missing-sem">#action-bash-missing-sem</a></li></ul>
+                                <a href="https://tldp.org/LDP/Bash-Beginners-Guide/html/" target="_blank" rel="noopener noreferrer">[Resource Link - TLDP]</a>
+                                <span class="skill-tag skill-level-1 status-alternative">Beginner</span>
+                                <div class="rationale">Provides more depth than Missing Semester if needed.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-bash-basics-practice">
+                                <h6>Practice: Simple Scripts</h6>
+                                <p>Focus: Write scripts that: print 
+arguments, use variables, redirect output to a file, pipe output of one 
+command to another (e.g., `ls -l | grep .c`).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-bash-missing-sem">#action-bash-missing-sem</a></li></ul>
+                                <a>[Action: Write and run scripts]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Quoting issues (especially with spaces), incorrect redirection, misunderstanding pipes. Debug: Use `echo` extensively, use `bash -x script.sh` for tracing.">Bash Basics Practice</div>
+                            </li>
+                        </ul>
+                     </div>
+                 </details>
+
+                 <details class="concept level-3 skill-level-1" id="concept-bash-control-flow">
+                     <summary><h4>Concept: Control Flow &amp; Functions <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                      <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-article" id="action-bash-control-flow-tutorial">
+                                <h6>Bash Control Flow Tutorial (e.g., RyansTutorials)</h6>
+                                <p>Focus: `if`/`then`/`else`/`fi`, test command (`[ ... ]` or `[[ ... ]]`), loops (`for`, `while`), functions.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-bash-basics-practice">#action-bash-basics-practice</a></li></ul>
+                                <a href="https://ryanstutorials.net/bash-scripting-tutorial/bash-if-statements.php" target="_blank" rel="noopener noreferrer">[Resource Link - RyansTutorials (If)]</a>
+                                <a href="https://ryanstutorials.net/bash-scripting-tutorial/bash-loops.php" target="_blank" rel="noopener noreferrer">[Resource Link - RyansTutorials (Loops)]</a>
+                                <a href="https://ryanstutorials.net/bash-scripting-tutorial/bash-functions.php" target="_blank" rel="noopener noreferrer">[Resource Link - RyansTutorials (Functions)]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Clear examples of fundamental control structures.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-docs" id="action-bash-guide-control">
+                                <h6>Bash Guide for Beginners: Chapters 6-9</h6>
+                                <p>Focus: Deeper dive into conditions, loops, functions, and command line processing.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-bash-control-flow-tutorial">#action-bash-control-flow-tutorial</a></li></ul>
+                                <a href="https://tldp.org/LDP/Bash-Beginners-Guide/html/" target="_blank" rel="noopener noreferrer">[Resource Link - TLDP]</a>
+                                <span class="skill-tag skill-level-1 status-alternative">Beginner</span>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-bash-control-practice">
+                                <h6>Practice: Scripts with Control Flow</h6>
+                                <p>Focus: Write scripts that: check if a file exists, loop through files in a directory, define and call a simple function.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-bash-control-flow-tutorial">#action-bash-control-flow-tutorial</a></li></ul>
+                                <a>[Action: Write and run scripts]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Syntax errors (`fi` missing, spaces in `[`), logic errors in conditions, incorrect function calls. Debug: Use `bash -x`, `echo`, check exit status (`$?`) after commands.">Bash Control Flow Practice</div>
+                            </li>
+                            <li class="resource level-5 resource-type-tool" id="action-shellcheck-intro">
+                                <h6>Tool: ShellCheck Introduction</h6>
+                                <p>Focus: Using the online tool or command-line `shellcheck` to find common errors and bad practices in scripts.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-bash-control-practice">#action-bash-control-practice</a></li></ul>
+                                <a href="https://www.shellcheck.net/" target="_blank" rel="noopener noreferrer">[Resource Link - ShellCheck]</a>
+                                <a href="https://github.com/koalaman/shellcheck#installing" target="_blank" rel="noopener noreferrer">[Resource Link - Install]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Indispensable tool for writing more robust Bash scripts.</div>
+                            </li>
+                        </ul>
+                    </div>
+                 </details>
+            </article>
+
+            <div class="milestone-gate" id="milestone-Phase0">
+                 <h5>Milestone Gate: Phase 0 Completion</h5>
+                 <p>Objective: Demonstrate foundational proficiency in C programming, core development tools, and the Gentoo environment.</p>
+                 <ul>
+                     <li>Successfully complete and debug all C exercises up to <a href="#action-c-io-exercism">#action-c-io-exercism</a> using `gcc`, `make`, GDB, and Valgrind.</li>
+                     <li>Demonstrate basic Vim/Neovim proficiency for editing code and config files.</li>
+                     <li>Demonstrate basic Git proficiency (local repo, basic branching/merging, GitHub push/pull).</li>
+                     <li>Successfully complete basic Bash scripting exercises up to <a href="#action-bash-control-practice">#action-bash-control-practice</a> and validate with ShellCheck.</li>
+                     <li>Ensure Gentoo system is stable, core tools installed, kernel built and bootable.</li>
+                     <li>Complete Project Phase 0.</li>
+                </ul>
+            </div>
+
+             <article class="topic level-2 area-project" id="topic-project-phase0">
+                <h3>Area: Project Phase 0 - Foundational C Utility</h3>
+                <p class="rationale">Rationale: Apply fundamental C 
+programming skills, toolchain usage, and problem-solving to build a 
+tangible, testable command-line utility. Directly addresses hireability 
+skills (C programming, debugging, tool usage).</p>
+
+                <details class="concept level-3 skill-level-1" id="concept-project0-spec">
+                    <summary><h4>Concept: Project Specification &amp; Design <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                    <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-project-task" id="project-Phase0-CTool-Spec">
+                                <h6>Project Task: Define Simple Command-Line Tool</h6>
+                                <p>Focus: Define requirements for a 
+simple C utility (e.g., `word_count`: counts lines/words/chars like 
+`wc`; `simple_grep`: finds lines matching a pattern; `file_concat`: 
+concatenates files). Prioritize `word_count` initially.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-c-io-exercism">#action-c-io-exercism</a>, <a href="#action-bash-control-practice">#action-bash-control-practice</a></li></ul>
+                                <a>[Action: Write down tool requirements]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                             <li class="resource level-5 resource-type-project-task" id="project-Phase0-CTool-Design">
+                                <h6>Project Task: Basic Design &amp; File Structure</h6>
+                                <p>Focus: Outline main function logic 
+(`main.c`), helper functions (e.g., in `counter.c`, `counter.h`), 
+argument parsing approach (basic `argv` loop), file reading approach 
+(`fgets`). Create Makefile structure.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase0-CTool-Spec">#project-Phase0-CTool-Spec</a>, <a href="#action-make-multifile-practice">#action-make-multifile-practice</a></li></ul>
+                                <a>[Action: Sketch design, create files/Makefile]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+                <details class="concept level-3 skill-level-2" id="concept-project0-impl">
+                    <summary><h4>Concept: Implementation &amp; Testing <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                           <li class="resource level-5 resource-type-project-task" id="project-Phase0-CTool-Impl">
+                                <h6>Project Task: Implement Core Logic</h6>
+                                <p>Focus: Implement file reading loop, 
+character/word/line counting logic, argument handling (read from stdin 
+if no args, or from specified files). Use structs if helpful.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase0-CTool-Design">#project-Phase0-CTool-Design</a></li></ul>
+                                <a>[Action: Write C code]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Off-by-one errors in loops, incorrect file handling (check `fopen` result, `fclose`), memory errors (use Valgrind), incorrect word definition (whitespace handling). Debug: Use GDB, print statements, Valgrind.">Project 0 Implementation</div>
+                            </li>
+                            <li class="resource level-5 resource-type-project-task" id="project-Phase0-CTool-Test">
+                                <h6>Project Task: Basic Testing</h6>
+                                <p>Focus: Create sample input text 
+files. Run the tool against them and compare output with standard `wc`. 
+Test edge cases (empty file, file not found, no arguments -&gt; stdin).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase0-CTool-Impl">#project-Phase0-CTool-Impl</a></li></ul>
+                                <a>[Action: Create test files, run comparisons]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                             <li class="resource level-5 resource-type-project-task" id="project-Phase0-CTool-Refine">
+                                <h6>Project Task: Refinement &amp; Valgrind</h6>
+                                <p>Focus: Clean up code based on 
+testing. Ensure no compiler warnings (`-Wall -Wextra`). Run Valgrind 
+(`--leak-check=full`) to ensure no memory errors.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase0-CTool-Test">#project-Phase0-CTool-Test</a>, <a href="#action-valgrind-practice">#action-valgrind-practice</a></li></ul>
+                                <a>[Action: Refactor, compile, run Valgrind]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                            <li class="resource level-5 resource-type-project-task" id="project-Phase0-CTool-Git">
+                                <h6>Project Task: Version Control</h6>
+                                <p>Focus: Commit final working version to the local Git repository. Write a clear commit message summarizing the work.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase0-CTool-Refine">#project-Phase0-CTool-Refine</a>, <a href="#action-git-practice-local">#action-git-practice-local</a></li></ul>
+                                <a>[Action: `git add .`, `git commit`]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+        </section>
+
+         <!-- Module 1: Core Systems & Programming -->
+        <section class="module level-1" id="module-1">
+            <h2>Module 1: Diving Deeper - Advanced C, Systems Interfaces, and Rust Introduction</h2>
+            <p class="rationale">Rationale: Build upon C mastery with 
+advanced concepts. Introduce fundamental computer architecture and OS 
+principles necessary for low-level optimization. Begin Rust journey, 
+leveraging C knowledge. Integrate concepts through a more complex 
+project.</p>
+
+            <article class="topic level-2 area-programming" id="topic-c-advanced">
+                <h3>Area: C Programming - Advanced Topics</h3>
+                <p class="rationale">Rationale: Covering more complex C features essential for systems programming and performance work.</p>
+
+                 <details class="concept level-3 skill-level-3" id="concept-c-advanced-pointers">
+                     <summary><h4>Concept: Advanced Pointer Techniques <span class="skill-tag skill-level-3">Advanced</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-kingc-ch17-review">
+                                <h6>C Programming (King): Chapter 17 Review</h6>
+                                <p>Focus: Deepen understanding of function pointers, pointers to pointers, `void*`, casting pointers.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#concept-c-pointers-memory">#concept-c-pointers-memory</a>, <a href="#milestone-Phase0">#milestone-Phase0</a></li></ul>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-3">Advanced</span>
+                            </li>
+                            <li class="resource level-5 resource-type-article" id="action-fnptr-tutorial">
+                                <h6>Tutorial: Function Pointers in C</h6>
+                                <p>Focus: Syntax, use cases (callbacks, jump tables - conceptual).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch17-review">#action-kingc-ch17-review</a></li></ul>
+                                <a href="https://www.cprogramming.com/tutorial/function-pointers.html" target="_blank" rel="noopener noreferrer">[Resource Link - cprogramming.com]</a>
+                                <span class="skill-tag skill-level-3">Advanced</span>
+                                <div class="rationale">Function pointers are critical for many system APIs and flexible designs.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-c-fnptr-exercise">
+                                <h6>Practice: Simple Function Pointer Example</h6>
+                                <p>Focus: Write a program that uses a 
+function pointer to call different arithmetic functions (`add`, 
+`subtract`) based on user input or arguments.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-fnptr-tutorial">#action-fnptr-tutorial</a></li></ul>
+                                <a>[Action: Write C code, compile, debug]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                             <li class="resource level-5 resource-type-book" id="action-modernc-ch10-11">
+                                <h6>Modern C (Gustedt): Ch 10 (Generic Programming), Ch 11 (Threads - Intro only)</h6>
+                                <p>Focus: Using `void*` and function 
+pointers for generic data structures (conceptual intro), basic thread 
+concepts (awareness for later).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-fnptr-tutorial">#action-fnptr-tutorial</a></li></ul>
+                                <a href="https://gustedt.gitlabpages.inria.fr/modern-c/modern-c.pdf" target="_blank" rel="noopener noreferrer">[Resource Link - PDF]</a>
+                                <span class="skill-tag skill-level-3">Advanced</span>
+                                <div class="rationale">Introduces techniques for more flexible code and previews concurrency.</div>
+                            </li>
+                        </ul>
+                    </div>
+                 </details>
+                <details class="concept level-3 skill-level-3" id="concept-c-bit-manipulation">
+                    <summary><h4>Concept: Bit Manipulation <span class="skill-tag skill-level-3">Advanced</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                           <li class="resource level-5 resource-type-book" id="action-csapp-ch2-bits">
+                                <h6>CS:APP (Bryant, O'Hallaron): Chapter 2 (Representing and Manipulating Information)</h6>
+                                <p>Focus: Integer representations (two's
+ complement), bitwise operators (`&amp;`, `|`, `^`, `~`, `&lt;&lt;`, 
+`&gt;&gt;`), masks, practical examples.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-modernc-ch1-4">#action-modernc-ch1-4</a></li></ul>
+                                <a href="http://csapp.cs.cmu.edu/3e/home.html" target="_blank" rel="noopener noreferrer">[Resource Link - CS:APP Website]</a>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">CS:APP provides 
+the best introduction to low-level data representation and manipulation.
+ Essential for hardware interaction and optimization. "&gt; K&amp;R" met
+ by depth and programmer perspective.</div>
+                                <ul class="foundation-links"><li>Foundations: <a href="#concept-math-binary">#concept-math-binary</a> (Implicitly covered here)</li></ul>
+                            </li>
+                            <li class="resource level-5 resource-type-article" id="action-bit-tricks-guide">
+                                <h6>Guide: Bit Twiddling Hacks</h6>
+                                <p>Focus: Collection of common and 
+efficient bit manipulation tricks (setting/clearing/testing bits, 
+swapping, counting bits, etc.). Study a few key examples.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-csapp-ch2-bits">#action-csapp-ch2-bits</a></li></ul>
+                                <a href="https://graphics.stanford.edu/~seander/bithacks.html" target="_blank" rel="noopener noreferrer">[Resource Link - Stanford Graphics]</a>
+                                <span class="skill-tag skill-level-3">Advanced</span>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-c-bits-exercism">
+                                <h6>Exercism C Track: Bit Manipulation Exercises</h6>
+                                <p>Focus: "Hamming" (revisit), "Difference of Squares" (bitwise solution?). Look for exercises explicitly using bitwise operators.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-bit-tricks-guide">#action-bit-tricks-guide</a></li></ul>
+                                <a href="https://exercism.org/tracks/c" target="_blank" rel="noopener noreferrer">[Resource Link - Exercism]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+                 <details class="concept level-3 skill-level-3" id="concept-c-error-handling">
+                     <summary><h4>Concept: Robust Error Handling <span class="skill-tag skill-level-3">Advanced</span></h4></summary>
+                      <div>
+                        <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-effectivec-error-handling">
+                                <h6>Effective C (Seacord): Error Handling Sections</h6>
+                                <p>Focus: Checking return values, using `errno`, `perror`, `strerror`, designing functions that report errors effectively.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-kingc-ch9-10">#action-kingc-ch9-10</a></li></ul>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-3">Advanced</span>
+                                <div class="rationale">Crucial for writing reliable systems code.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-docs" id="action-man-errno">
+                                <h6>Man Pages: `errno(3)`, `perror(3)`, `strerror(3)`</h6>
+                                <p>Focus: Understand how standard library functions signal errors using `errno`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-effectivec-error-handling">#action-effectivec-error-handling</a></li></ul>
+                                <a>[Action: Run `man 3 errno`, `man 3 perror`]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-c-error-practice">
+                                <h6>Practice: Adding Error Handling</h6>
+                                <p>Focus: Modify previous C 
+exercises/projects (e.g., file I/O, memory allocation) to rigorously 
+check return values and handle potential errors gracefully (e.g., print 
+error message using `perror` and exit).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-man-errno">#action-man-errno</a></li></ul>
+                                <a>[Action: Refactor C code]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Ignoring return values, not checking `errno` correctly (must check immediately after call), resource leaks on error paths. Debug: Use GDB to step through error conditions.">Error Handling Practice</div>
+                            </li>
+                        </ul>
+                    </div>
+                 </details>
+            </article>
+
+            <article class="topic level-2 area-architecture" id="topic-assembly-arch-intro">
+                 <h3>Area: Assembly Language &amp; Computer Architecture I</h3>
+                 <p class="rationale">Rationale: Bridge the gap between C
+ and hardware. Understand how programs are actually represented and 
+executed by the processor. Foundation for low-level optimization and OS 
+internals.</p>
+
+                 <details class="concept level-3 skill-level-2" id="concept-x86-64-asm-basics">
+                    <summary><h4>Concept: x86-64 Assembly Basics <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-book" id="action-csapp-ch3-asm">
+                                <h6>CS:APP: Chapter 3 (Machine-Level Representation of Programs)</h6>
+                                <p>Focus: Introduction to x86-64 (or 
+IA32 initially), registers, data formats, basic instructions (mov, 
+arithmetic, logic), control flow (jumps, conditional moves), procedure 
+calls (stack frame, call/ret).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-csapp-ch2-bits">#action-csapp-ch2-bits</a>, Basic C programming</li></ul>
+                                <a href="http://csapp.cs.cmu.edu/3e/home.html" target="_blank" rel="noopener noreferrer">[Resource Link - CS:APP Website]</a>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Excellent, programmer-focused introduction to assembly via C examples.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-docs" id="action-x86-64-jorgensen-intro">
+                                <h6>x86-64 Assembly Language Programming with Ubuntu (Jorgensen): Chapters 1-4</h6>
+                                <p>Focus: Environment setup (NASM, ld, 
+GDB), basic structure of assembly programs, data definition, fundamental
+ instructions (mov, add, sub, imul, idiv), system calls for I/O.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-csapp-ch3-asm">#action-csapp-ch3-asm</a></li></ul>
+                                <a href="http://www.egr.unlv.edu/~ed/x86.html" target="_blank" rel="noopener noreferrer">[Resource Link - PDF/Website]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Practical, Linux-focused guide using NASM syntax, aligns with Gentoo environment.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-asm-gcc-s">
+                                <h6>Tool: `gcc -S`</h6>
+                                <p>Focus: Compile simple C programs 
+(`.c`) to assembly (`.s`) using `gcc -S -masm=intel` (or AT&amp;T syntax
+ if preferred initially). Examine the output to see how C constructs 
+translate.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-x86-64-jorgensen-intro">#action-x86-64-jorgensen-intro</a></li></ul>
+                                <a>[Action: Compile C examples, read assembly output]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div title="Pitfalls: Compiler optimizations obscure direct translation (use `-O0`), AT&amp;T vs Intel syntax confusion. Debug: Start with very simple C code. Use `-fno-asynchronous-unwind-tables` to simplify output slightly.">GCC Assembly Output</div>
+                            </li>
+                            <li class="resource level-5 resource-type-tool" id="action-gdb-disassemble">
+                                <h6>Tool: GDB `disassemble` command</h6>
+                                <p>Focus: Load an executable compiled 
+with `-g` into GDB. Use `disassemble main` (or other function) to view 
+assembly. Step through using `stepi` (step instruction) and `nexti`. 
+Examine registers with `info registers`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-asm-gcc-s">#action-asm-gcc-s</a>, <a href="#action-gdb-practice-simple-c">#action-gdb-practice-simple-c</a></li></ul>
+                                <a>[Action: Use GDB disassemble/stepi commands]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Forgetting `-g`, complex output due to library code/startup code. Debug: Set breakpoint at `main` first. Focus on your own code's disassembly.">GDB Disassembly</div>
+                            </li>
+                            <li class="resource level-5 resource-type-exercise" id="action-asm-basics-practice">
+                                <h6>Practice: Simple Assembly Programs (NASM)</h6>
+                                <p>Focus: Write simple "hello world" in 
+assembly using Linux syscalls (write, exit). Assemble (`nasm -f elf64`),
+ link (`ld`), run. Debug with GDB (`stepi`). Implement simple arithmetic
+ operations.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-x86-64-jorgensen-intro">#action-x86-64-jorgensen-intro</a>, <a href="#action-gdb-disassemble">#action-gdb-disassemble</a></li></ul>
+                                <a>[Action: Write, assemble, link, run, debug assembly]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                        </ul>
+                    </div>
+                 </details>
+
+                <details class="concept level-3 skill-level-2" id="concept-arch-isa-cpu-basics">
+                    <summary><h4>Concept: ISA &amp; Basic CPU Operation <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-csapp-ch4-arch-intro">
+                                <h6>CS:APP: Chapter 4 (Processor Architecture) - Introduction</h6>
+                                <p>Focus: ISA overview (Y86-64 example),
+ instruction encoding basics, sequential processor stages (Fetch, 
+Decode, Execute, Memory, Write Back, PC Update - conceptual).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#concept-x86-64-asm-basics">#concept-x86-64-asm-basics</a></li></ul>
+                                <a href="http://csapp.cs.cmu.edu/3e/home.html" target="_blank" rel="noopener noreferrer">[Resource Link - CS:APP Website]</a>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Connects assembly instructions to the underlying hardware execution model using a simplified ISA.</div>
+                                <ul class="foundation-links"><li>Foundations: <a href="#concept-theory-turing">#concept-theory-turing</a> (Implicit Von Neumann architecture)</li></ul>
+                            </li>
+                            <li class="resource level-5 resource-type-course" id="action-nand2tetris-ch4-5">
+                                <h6>Nand2Tetris: Chapters 4 (Machine Language), 5 (Computer Architecture)</h6>
+                                <p>Focus: Hack machine language, Von 
+Neumann architecture, Fetch-Execute cycle, CPU components (ALU, 
+Registers, Control Unit), Memory interface.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#concept-x86-64-asm-basics">#concept-x86-64-asm-basics</a></li></ul>
+                                <a href="https://www.nand2tetris.org/book" target="_blank" rel="noopener noreferrer">[Resource Link - Nand2Tetris Book/Website]</a>
+                                <span class="skill-tag skill-level-1 status-alternative">Beginner</span>
+                                <div class="rationale">Provides a 
+simplified, hands-on view of building these components from logic gates 
+(if user revisits earlier chapters). Good for conceptual understanding. 
+"&gt; K&amp;R" met by unique hands-on pedagogy.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-article" id="action-cpu-fetch-decode-execute">
+                                <h6>Article/Tutorial: Fetch-Decode-Execute Cycle Explained</h6>
+                                <p>Focus: Visual or textual explanation of the basic steps a CPU takes to execute a single instruction.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-csapp-ch4-arch-intro">#action-csapp-ch4-arch-intro</a> OR <a href="#action-nand2tetris-ch4-5">#action-nand2tetris-ch4-5</a></li></ul>
+                                <a href="https://www.youtube.com/watch?v=Z5JC9GayLmc" target="_blank" rel="noopener noreferrer">[Resource Link - Example Video]</a>
+                                <a href="https://cs.stanford.edu/people/eroberts/courses/soco/projects/risc/pipelining/index.html" target="_blank" rel="noopener noreferrer">[Alternative - Text/Diagrams]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+            </article>
+
+             <article class="topic level-2 area-systems" id="topic-os-concepts-intro">
+                 <h3>Area: Operating System Concepts I</h3>
+                 <p class="rationale">Rationale: Introduce the 
+fundamental role of the OS as a resource manager and abstraction layer 
+between hardware and applications. Necessary context for systems 
+programming.</p>
+
+                 <details class="concept level-3 skill-level-2" id="concept-os-role-virtualization">
+                     <summary><h4>Concept: OS Role, Virtualization (CPU/Memory) <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                     <div>
+                         <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-book" id="action-ostep-ch1-5">
+                                <h6>OSTEP: Chapters 1-5 (Intro, Virtualization Intro, Processes, Process API, Direct Execution)</h6>
+                                <p>Focus: What is an OS? Goals 
+(convenience, efficiency). Virtualization concept. Process abstraction, 
+process states, process creation (`fork`), limited direct execution, 
+role of system calls.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#topic-c-advanced">#topic-c-advanced</a>, <a href="#topic-assembly-arch-intro">#topic-assembly-arch-intro</a></li></ul>
+                                <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/" target="_blank" rel="noopener noreferrer">[Resource Link - OSTEP Book (Free Online)]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Excellent, free, and conceptually clear introduction to core OS ideas. "&gt; K&amp;R" met by depth and pedagogical clarity.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-docs" id="action-man-fork-exec">
+                                <h6>Man Pages: `fork(2)`, `execve(2)`, `wait(2)`, `exit(3)`</h6>
+                                <p>Focus: Understand the system call interface for process creation and management in Linux.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-ostep-ch1-5">#action-ostep-ch1-5</a></li></ul>
+                                <a>[Action: Run `man 2 fork`, `man 2 execve`, etc.]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Direct interaction with the primary source documentation for system calls.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-c-fork-exec-practice">
+                                <h6>Practice: Simple `fork`/`exec`/`wait` Program</h6>
+                                <p>Focus: Write a C program that forks a
+ child process. The child uses `execve` to run `/bin/ls -l`. The parent 
+uses `wait` to wait for the child to finish.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-man-fork-exec">#action-man-fork-exec</a></li></ul>
+                                <a>[Action: Write, compile, run C code]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: `exec` replacing the process image (code after `exec` in child won't run unless `exec` fails), checking `fork` return value (0 in child, PID in parent, -1 on error), zombie processes if parent doesn't `wait`. Debug: Use GDB `follow-fork-mode child/parent`.">fork/exec Practice</div>
+                            </li>
+                             <li class="resource level-5 resource-type-book" id="action-ostep-ch13-15">
+                                <h6>OSTEP: Chapters 13-15 (Address Space, Memory API, Address Translation)</h6>
+                                <p>Focus: Process address space concept,
+ base and bounds registers, segmentation (conceptual), introduction to 
+paging hardware (MMU role).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-ostep-ch1-5">#action-ostep-ch1-5</a></li></ul>
+                                <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/" target="_blank" rel="noopener noreferrer">[Resource Link - OSTEP Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <ul class="foundation-links"><li>Foundations: <a href="#concept-arch-isa-cpu-basics">#concept-arch-isa-cpu-basics</a> (Memory interface)</li></ul>
+                            </li>
+                         </ul>
+                    </div>
+                 </details>
+
+                 <details class="concept level-3 skill-level-2" id="concept-os-syscalls-exceptions">
+                     <summary><h4>Concept: System Calls, Exceptions, Interrupts <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                      <div>
+                         <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-csapp-ch8-exceptions">
+                                <h6>CS:APP: Chapter 8 (Exceptional Control Flow)</h6>
+                                <p>Focus: Exceptions vs Interrupts vs Traps (syscalls), context switching basics, process context.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-ostep-ch1-5">#action-ostep-ch1-5</a></li></ul>
+                                <a href="http://csapp.cs.cmu.edu/3e/home.html" target="_blank" rel="noopener noreferrer">[Resource Link - CS:APP Website]</a>
+                                <a>[Resource Link - Placeholder for Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Provides the hardware/systems perspective on how control transfers to the OS kernel.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-article" id="action-syscall-mechanism-article">
+                                <h6>Article/Tutorial: Linux System Call Mechanism (x86-64)</h6>
+                                <p>Focus: How `syscall` instruction works, role of registers (`rax`, `rdi`, `rsi`, etc.), kernel entry point, returning values.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-csapp-ch8-exceptions">#action-csapp-ch8-exceptions</a>, <a href="#concept-x86-64-asm-basics">#concept-x86-64-asm-basics</a></li></ul>
+                                <a href="https://blog.packagecloud.io/eng/2016/04/05/the-definitive-guide-to-linux-system-calls/" target="_blank" rel="noopener noreferrer">[Resource Link - Example Article]</a>
+                                <a href="https://man7.org/linux/man-pages/man2/syscall.2.html" target="_blank" rel="noopener noreferrer">[Resource Link - syscall(2) man page]</a>
+                                <span class="skill-tag skill-level-3">Advanced</span>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-strace-intro">
+                                <h6>Tool: `strace` Introduction</h6>
+                                <p>Focus: Basic usage (`strace 
+./executable`, `strace -p PID`). Observing system calls made by simple 
+programs (like `ls` or your `fork`/`exec` practice).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-syscall-mechanism-article">#action-syscall-mechanism-article</a></li></ul>
+                                <a href="https://man7.org/linux/man-pages/man1/strace.1.html" target="_blank" rel="noopener noreferrer">[Resource Link - strace(1) man page]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Essential tool for observing program-OS interaction.</div>
+                            </li>
+                         </ul>
+                    </div>
+                 </details>
+            </article>
+
+             <article class="topic level-2 area-programming" id="topic-rust-intro">
+                 <h3>Area: Rust Programming Introduction</h3>
+                 <p class="rationale">Rationale: Introduce Rust, 
+leveraging C knowledge but focusing on its unique safety features 
+(ownership, borrowing) and tooling. Chosen as primary secondary language
+ for safety and performance alignment with user goals.</p>
+
+                 <details class="concept level-3 skill-level-1" id="concept-rust-setup-basics">
+                     <summary><h4>Concept: Rust Setup &amp; Basic Syntax <span class="skill-tag skill-level-1">Beginner</span></h4></summary>
+                     <div>
+                         <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-setup" id="action-rustup-install">
+                                <h6>Task: Install Rust Toolchain (`rustup`)</h6>
+                                <p>Focus: Install `rustup`, `rustc`, `cargo`, `rustfmt`, `clippy` via official instructions.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#topic-bash-scripting">#topic-bash-scripting</a> (basic CLI)</li></ul>
+                                <a href="https://www.rust-lang.org/tools/install" target="_blank" rel="noopener noreferrer">[Resource Link - Rust Website]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-rustbook-ch1-3">
+                                <h6>The Rust Programming Language Book ("The Book"): Chapters 1-3</h6>
+                                <p>Focus: Introduction, Hello World 
+(`cargo new`, `cargo run`), variables, data types (scalar, compound), 
+functions, comments, control flow (if, loops).</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustup-install">#action-rustup-install</a>, Prior programming concepts (from C study)</li></ul>
+                                <a href="https://doc.rust-lang.org/book/" target="_blank" rel="noopener noreferrer">[Resource Link - The Rust Book (Free Online)]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">The official, definitive introduction to Rust. Excellent quality. "&gt; K&amp;R" met by comprehensiveness and modern pedagogy.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-rustlings-intro">
+                                <h6>Rustlings: Initial Exercises</h6>
+                                <p>Focus: Complete exercises in `variables`, `functions`, `if`. Interactive practice for basic syntax and compiler messages.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch1-3">#action-rustbook-ch1-3</a></li></ul>
+                                <a href="https://github.com/rust-lang/rustlings/" target="_blank" rel="noopener noreferrer">[Resource Link - Rustlings Repo]</a>
+                                <a>[Action: Install and run `rustlings watch`]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Excellent guided exercises for learning Rust by fixing small broken programs.</div>
+                                <div title="Pitfalls: Misunderstanding compiler errors (read them carefully!), basic syntax typos. Debug: The compiler (`rustc`) is your best friend; `cargo check` before `cargo run`.">Rustlings Intro</div>
+                            </li>
+                         </ul>
+                     </div>
+                 </details>
+                 <details class="concept level-3 skill-level-2" id="concept-rust-ownership">
+                    <summary><h4>Concept: Ownership and Borrowing <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                    <div>
+                         <ul class="resource-list level-5">
+                             <li class="resource level-5 resource-type-book" id="action-rustbook-ch4">
+                                <h6>The Rust Book: Chapter 4 (Understanding Ownership)</h6>
+                                <p>Focus: Ownership rules, References &amp; Borrowing (immutable/mutable borrows), Slices.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch1-3">#action-rustbook-ch1-3</a></li></ul>
+                                <a href="https://doc.rust-lang.org/book/ch04-00-understanding-ownership.html" target="_blank" rel="noopener noreferrer">[Resource Link - The Rust Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">This is the core unique concept of Rust. Requires careful study.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-rustlings-ownership">
+                                <h6>Rustlings: Ownership Exercises</h6>
+                                <p>Focus: Complete exercises in `ownership`, `borrowing`, `slices`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch4">#action-rustbook-ch4</a>, <a href="#action-rustlings-intro">#action-rustlings-intro</a></li></ul>
+                                <a>[Action: Run `rustlings watch`]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Fighting the borrow checker, multiple mutable borrows, dangling references. Debug: Pay extremely close attention to compiler error messages, they often suggest the fix. Visualize lifetimes.">Rustlings Ownership</div>
+                            </li>
+                             <li class="resource level-5 resource-type-article" id="action-rust-ownership-visual">
+                                <h6>Article/Tutorial: Visualizing Rust Ownership/Borrowing</h6>
+                                <p>Focus: Find a good blog post or tutorial that uses diagrams to explain ownership, moves, borrows, and lifetimes.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch4">#action-rustbook-ch4</a></li></ul>
+                                <a href="https://docs.google.com/presentation/d/1XI-Q3o70zw313ADYO9lW3PZVIng4qM9fRFYw7sfCRjA/edit#slide=id.p" target="_blank" rel="noopener noreferrer">[Resource Link - Example Slides]</a>
+                                <span class="skill-tag skill-level-2 status-optional">Intermediate</span>
+                                <div class="rationale">Visual aids can significantly help internalize Rust's memory model.</div>
+                            </li>
+                         </ul>
+                     </div>
+                 </details>
+
+                 <details class="concept level-3 skill-level-2" id="concept-rust-structs-enums">
+                    <summary><h4>Concept: Structs, Enums, Pattern Matching <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-book" id="action-rustbook-ch5-6">
+                                <h6>The Rust Book: Ch 5 (Structs), Ch 6 (Enums and Pattern Matching)</h6>
+                                <p>Focus: Defining structs, tuple structs, methods (`impl`), defining enums, `Option`, `Result`, `match` expressions, `if let`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch4">#action-rustbook-ch4</a></li></ul>
+                                <a href="https://doc.rust-lang.org/book/ch05-00-structs.html" target="_blank" rel="noopener noreferrer">[Resource Link - Ch 5]</a>
+                                <a href="https://doc.rust-lang.org/book/ch06-00-enums.html" target="_blank" rel="noopener noreferrer">[Resource Link - Ch 6]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                             <li class="resource level-5 resource-type-exercise" id="action-rustlings-structs-enums">
+                                <h6>Rustlings: Structs, Enums, Match Exercises</h6>
+                                <p>Focus: Complete exercises in 
+`structs`, `enums`, `match_it`. Practice defining and using custom 
+types, handling `Option`/`Result`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch5-6">#action-rustbook-ch5-6</a>, <a href="#action-rustlings-ownership">#action-rustlings-ownership</a></li></ul>
+                                <a>[Action: Run `rustlings watch`]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Forgetting to handle all cases in `match`, confusion between `Option` and `Result`. Debug: Compiler errors are usually very helpful here.">Rustlings Structs/Enums</div>
+                            </li>
+                        </ul>
+                    </div>
+                 </details>
+            </article>
+
+            <div class="milestone-gate" id="milestone-Phase1">
+                 <h5>Milestone Gate: Phase 1 Completion</h5>
+                 <p>Objective: Demonstrate intermediate proficiency in C
+ (including memory/pointers), basic systems understanding (CPU/OS 
+virtualization), foundational Rust skills (ownership, core types), and 
+ability to build/debug small multi-file projects.</p>
+                 <ul>
+                     <li>Successfully implement advanced C exercises 
+involving pointers, memory allocation, structs, and error handling, 
+verified with Valgrind.</li>
+                     <li>Explain the basic Fetch-Decode-Execute cycle and the OS role in process/memory virtualization.</li>
+                     <li>Successfully complete Rustlings exercises covering ownership, borrowing, structs, and enums.</li>
+                     <li>Demonstrate ability to use `gcc`, `make`, GDB, 
+`strace` (basic), `cargo`, `rustc` effectively for building and 
+debugging C and Rust code.</li>
+                    <li>Complete Project Phase 1.</li>
+                 </ul>
+            </div>
+
+             <article class="topic level-2 area-project" id="topic-project-phase1">
+                <h3>Area: Project Phase 1 - Rust Command-Line Utility</h3>
+                <p class="rationale">Rationale: Apply foundational Rust 
+skills (ownership, error handling with Result/Option, structs/enums, 
+basic I/O) to build a more complex utility than Project 0. Reinforces 
+toolchain usage (`cargo`) and testing concepts. Directly addresses 
+hireability skills (Rust basics, problem-solving, testing).</p>
+
+                <details class="concept level-3 skill-level-2" id="concept-project1-spec">
+                    <summary><h4>Concept: Project Specification &amp; Design <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                     <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-project-task" id="project-Phase1-LangUtil-Spec">
+                                <h6>Project Task: Define Simple Rust Utility</h6>
+                                <p>Focus: Define requirements for a 
+slightly more complex CLI tool (e.g., `simple_calc`: basic RPN or infix 
+calculator; `json_parser`: validates and pretty-prints JSON from 
+file/stdin; `log_analyzer`: reads log file, counts error types). 
+Prioritize `simple_calc` or `json_parser`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#milestone-Phase0">#milestone-Phase0</a>, <a href="#concept-rust-structs-enums">#concept-rust-structs-enums</a></li></ul>
+                                <a>[Action: Write down tool requirements]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-rustbook-ch12-project">
+                                <h6>The Rust Book: Chapter 12 (I/O Project: Building a Command Line Program)</h6>
+                                <p>Focus: Read through this chapter as a
+ case study. Pay attention to structuring the code (`lib.rs`, 
+`main.rs`), handling arguments (`std::env::args`), reading files 
+(`std::fs`), error handling (`Result`, `Box<dyn error="">`), writing tests (`#[cfg(test)]`).</dyn></p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase1-LangUtil-Spec">#project-Phase1-LangUtil-Spec</a></li></ul>
+                                <a href="https://doc.rust-lang.org/book/ch12-00-an-io-project.html" target="_blank" rel="noopener noreferrer">[Resource Link - The Rust Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Provides a template and best practices for structuring a Rust CLI application.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-project-task" id="project-Phase1-LangUtil-Design">
+                                <h6>Project Task: Design Rust Utility Structure</h6>
+                                <p>Focus: Plan modules (`lib.rs` for 
+core logic, `main.rs` for CLI handling). Define key structs/enums. 
+Outline main functions and error handling strategy using `Result`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch12-project">#action-rustbook-ch12-project</a></li></ul>
+                                <a>[Action: Sketch design, create `cargo new project_name`, structure files]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                        </ul>
+                    </div>
+                </details>
+                 <details class="concept level-3 skill-level-2" id="concept-project1-impl">
+                     <summary><h4>Concept: Implementation &amp; Testing <span class="skill-tag skill-level-2">Intermediate</span></h4></summary>
+                      <div>
+                        <ul class="resource-list level-5">
+                            <li class="resource level-5 resource-type-project-task" id="project-Phase1-LangUtil-Impl">
+                                <h6>Project Task: Implement Core Rust Logic</h6>
+                                <p>Focus: Implement the core 
+functionality (parsing, calculation, analysis) in `lib.rs`. Handle 
+errors using `Result`. Implement CLI argument parsing and file 
+reading/writing in `main.rs`.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase1-LangUtil-Design">#project-Phase1-LangUtil-Design</a></li></ul>
+                                <a>[Action: Write Rust code]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div title="Pitfalls: Ownership/borrowing errors, lifetime issues (less likely in simple CLI), error handling (unwrap() panics!), inefficient string handling. Debug: `cargo check`, `cargo build`, use `dbg!()` macro, compiler errors are key.">Project 1 Implementation</div>
+                            </li>
+                            <li class="resource level-5 resource-type-book" id="action-rustbook-ch11-testing">
+                                <h6>The Rust Book: Chapter 11 (Writing Automated Tests)</h6>
+                                <p>Focus: Writing unit tests (`#[test]`), integration tests (`tests/` directory), using `assert!` macros.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase1-LangUtil-Impl">#project-Phase1-LangUtil-Impl</a></li></ul>
+                                <a href="https://doc.rust-lang.org/book/ch11-00-testing.html" target="_blank" rel="noopener noreferrer">[Resource Link - The Rust Book]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                                <div class="rationale">Introduces Rust's built-in testing framework.</div>
+                            </li>
+                             <li class="resource level-5 resource-type-project-task" id="project-Phase1-LangUtil-Test">
+                                <h6>Project Task: Write Unit &amp; Integration Tests</h6>
+                                <p>Focus: Write unit tests for functions
+ in `lib.rs`. Write integration tests in `tests/` directory that run the
+ compiled binary with sample inputs/arguments and check output/exit 
+code.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rustbook-ch11-testing">#action-rustbook-ch11-testing</a></li></ul>
+                                <a>[Action: Write test code, run `cargo test`]</a>
+                                <span class="skill-tag skill-level-2">Intermediate</span>
+                            </li>
+                             <li class="resource level-5 resource-type-tool" id="action-rust-clippy-fmt-practice">
+                                <h6>Tools: `rustfmt` and `clippy`</h6>
+                                <p>Focus: Run `cargo fmt` to format 
+code. Run `cargo clippy` to check for common mistakes and stylistic 
+issues. Address suggestions.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#project-Phase1-LangUtil-Test">#project-Phase1-LangUtil-Test</a></li></ul>
+                                <a>[Action: Run `cargo fmt`, `cargo clippy`]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                                <div class="rationale">Essential tools for maintaining high-quality Rust code.</div>
+                            </li>
+                            <li class="resource level-5 resource-type-project-task" id="project-Phase1-LangUtil-Git">
+                                <h6>Project Task: Version Control</h6>
+                                <p>Focus: Commit final working version (including tests) to the local Git repository. Push to a new GitHub repository.</p>
+                                <ul class="prerequisites"><li>Prerequisite: <a href="#action-rust-clippy-fmt-practice">#action-rust-clippy-fmt-practice</a>, <a href="#action-git-practice-remote">#action-git-practice-remote</a></li></ul>
+                                <a>[Action: `git add .`, `git commit`, `git push`]</a>
+                                <span class="skill-tag skill-level-1">Beginner</span>
+                            </li>
+                        </ul>
+                    </div>
+                 </details>
+            </article>
+
+        </section>
+
+        <!-- Module 2: Placeholder -->
+        <section class="module level-1 status-placeholder" id="module-2">
+            <h2>Module 2: Deeper Systems - Concurrency, Architecture II, OS II</h2>
+            <p>...</p>
+        </section>
+
+        <!-- Module 3: Placeholder -->
+        <section class="module level-1 status-placeholder" id="module-3">
+            <h2>Module 3: Networking &amp; Distributed Systems Fundamentals</h2>
+            <p>...</p>
+        </section>
+
+         <!-- Module 4: Placeholder -->
+        <section class="module level-1 status-placeholder" id="module-4">
+            <h2>Module 4: Algorithms &amp; Data Structures II / Theory of Computation</h2>
+            <p>...</p>
+        </section>
+
+         <!-- Module 5: Placeholder -->
+        <section class="module level-1 status-placeholder" id="module-5">
+            <h2>Module 5: Performance Engineering &amp; Optimization</h2>
+            <p>...</p>
+        </section>
+
+         <!-- Module 6: Placeholder -->
+        <section class="module level-1 status-placeholder" id="module-6">
+            <h2>Module 6: AI/ML Foundations for Systems</h2>
+            <p>...</p>
+        </section>
+
+         <!-- Module 7: Placeholder -->
+        <section class="module level-1 status-placeholder" id="module-7">
+            <h2>Module 7: Advanced Systems &amp; Specialization Prep</h2>
+            <p>...</p>
+        </section>
+
+         <!-- Module 8: Placeholder -->
+        <section class="module level-1 status-placeholder" id="module-8">
+            <h2>Module 8: Specialization &amp; Capstone Project</h2>
+            <p>...</p>
+        </section>
+
+        <!-- Glossary Section (Optional Separate Section) -->
+        <section id="glossary" class="status-optional">
+            <h2>Glossary</h2>
+            <dl>
+                <dt>ABI (Application Binary Interface)</dt>
+                <dd>The low-level interface between an application program and the operating system or another application.</dd>
+                <dt>Arena Allocator</dt>
+                <dd>A memory allocation strategy where a large block of 
+memory (the arena) is allocated upfront, and subsequent smaller 
+allocations are carved out from this block, often with faster 
+allocation/deallocation within the arena's lifetime.</dd>
+                <dt>BSP (Board Support Package)</dt>
+                <dd>Software containing hardware-specific drivers and 
+other routines that allow a particular operating system to function in a
+ particular hardware environment (common in embedded systems).</dd>
+                 <dt>Cache Coherence</dt>
+                <dd>Ensuring that multiple caches in a multi-processor system maintain a consistent view of memory.</dd>
+                <dt>Context Switch</dt>
+                <dd>The process of storing the state of a process or 
+thread so that it can be restored and resume execution later, allowing 
+another process/thread to run.</dd>
+                 <dt>DPDK (Data Plane Development Kit)</dt>
+                <dd>Libraries and drivers for fast packet processing, often bypassing the kernel's network stack.</dd>
+                <dt>DWARF</dt>
+                <dd>A standardized debugging data format used by many compilers and debuggers to support source-level debugging.</dd>
+                <dt>ELF (Executable and Linkable Format)</dt>
+                <dd>A common standard file format for executables, object code, shared libraries, and core dumps.</dd>
+                <dt>FPGA (Field-Programmable Gate Array)</dt>
+                <dd>An integrated circuit designed to be configured by a
+ customer or a designer after manufacturing – hence the term 
+"field-programmable".</dd>
+                 <dt>GDB (GNU Debugger)</dt>
+                <dd>A portable debugger that runs on many Unix-like systems and works for many programming languages, including C, C++, and Rust.</dd>
+                <dt>Gentoo</dt>
+                <dd>A source-based Linux distribution known for its 
+flexibility, performance potential, and steep learning curve, forcing 
+users to understand system configuration deeply.</dd>
+                 <dt>IPC (Inter-Process Communication)</dt>
+                <dd>Mechanisms an operating system provides to allow processes to manage shared data and communicate with each other.</dd>
+                 <dt>ISA (Instruction Set Architecture)</dt>
+                <dd>The part of the computer architecture related to 
+programming, including the native data types, instructions, registers, 
+addressing modes, memory architecture, interrupt and exception handling,
+ and external I/O.</dd>
+                <dt>JIT (Just-In-Time) Compilation</dt>
+                <dd>Compilation done during execution of a program – at run time – rather than prior to execution.</dd>
+                <dt>Kernel Bypass</dt>
+                <dd>Techniques that allow user-space applications to 
+access network hardware directly, avoiding the overhead of the kernel's 
+network stack for higher performance.</dd>
+                 <dt>LKM (Loadable Kernel Module)</dt>
+                <dd>An object file that contains code to extend the running kernel (e.g., device drivers).</dd>
+                <dt>LTO (Link-Time Optimization)</dt>
+                <dd>A program optimization performed by a compiler at link time, allowing optimizations across different source files.</dd>
+                 <dt>MMU (Memory Management Unit)</dt>
+                <dd>Hardware unit responsible for handling virtual memory access and address translation.</dd>
+                <dt>NASM (Netwide Assembler)</dt>
+                <dd>An assembler and disassembler for the Intel x86 architecture.</dd>
+                 <dt>NUMA (Non-Uniform Memory Access)</dt>
+                <dd>A memory design used in multiprocessing, where the memory access time depends on the memory location relative to a processor.</dd>
+                <dt>PGO (Profile-Guided Optimization)</dt>
+                <dd>Compiler optimization technique that uses profiling data from test runs to inform optimization decisions.</dd>
+                 <dt>Portage</dt>
+                <dd>The package management system used by Gentoo Linux.</dd>
+                 <dt>POSIX Threads (Pthreads)</dt>
+                <dd>A POSIX standard for threads, defining a standard API for creating and manipulating threads.</dd>
+                 <dt>RAII (Resource Acquisition Is Initialization)</dt>
+                <dd>A programming idiom (especially in C++ and Rust) 
+where resource management (allocation, deallocation) is tied to object 
+lifetime through constructors and destructors.</dd>
+                <dt>RPN (Reverse Polish Notation)</dt>
+                <dd>A mathematical notation in which operators follow their operands.</dd>
+                <dt>SIMD (Single Instruction, Multiple Data)</dt>
+                <dd>A class of parallel computers in Flynn's taxonomy. 
+It describes computers with multiple processing elements that perform 
+the same operation on multiple data points simultaneously.</dd>
+                <dt>Syscall (System Call)</dt>
+                <dd>The programmatic way in which a computer program requests a service from the kernel of the operating system it is executed on.</dd>
+                <dt>TUI (Text-based User Interface)</dt>
+                <dd>A user interface that works with text, as opposed to GUIs (Graphical User Interfaces).</dd>
+                <dt>USE Flags</dt>
+                <dd>Keywords in Gentoo's Portage system that define support for optional features when building packages.</dd>
+                <dt>Valgrind</dt>
+                <dd>An instrumentation framework for building dynamic analysis tools; Memcheck is its most famous tool for detecting memory errors.</dd>
+                 <dt>VFS (Virtual File System)</dt>
+                <dd>An abstraction layer on top of a more concrete file 
+system, allowing client applications to access different types of 
+concrete file systems uniformly.</dd>
+                 <dt>VTune</dt>
+                <dd>Intel's performance analysis tool for CPU and system profiling.</dd>
+                 <dt>XDP (eXpress Data Path)</dt>
+                <dd>A high-performance data path within the Linux kernel for processing network packets.</dd>
+            </dl>
+        </section>
+
+    </div>
+
+
+
+  
+  
+  </body><body></body><style type="text/css"></style></html>
